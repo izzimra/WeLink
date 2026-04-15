@@ -4,6 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,9 +19,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,16 +32,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.a207944_izzi_izwan_lab02.ui.theme.A207944_Izzi_Izwan_Lab02Theme
+import com.example.a207944_izzi_izwan_lab02.ui.theme.A207944_Izzi_Izwan_Lab03Theme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            A207944_Izzi_Izwan_Lab02Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    HomeScreen(modifier = Modifier.padding(innerPadding))
+            A207944_Izzi_Izwan_Lab03Theme {
+                Surface(modifier = Modifier.fillMaxSize()) {
+                    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                        HomeScreen(modifier = Modifier.padding(innerPadding))
+                    }
                 }
             }
         }
@@ -44,98 +55,137 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 
     var searchInput by remember { mutableStateOf("") }
     var submittedSearch by remember { mutableStateOf("") }
-
+    var isContributionExpanded by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFFF4F7FF))
+            .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
 
-        Row(
+        Card(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            )
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "Weather:", fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color.Gray)
-                Column(modifier = Modifier.padding(start = 8.dp)) {
-                    Row(verticalAlignment = Alignment.Bottom) {
-                        Text(
-                            text = "28°  ",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFF1A1A2E)
-                        )
-                        Text(
-                            text = "Hey Izzi",
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFF1A1A2E)
-                        )
-                    }
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = "Loc: ", fontSize = 11.sp, color = Color.Gray)
-                        Text(
-                            text = "FTSM, UKM Bangi",
-                            fontSize = 11.sp,
-                            color = Color(0xFF888888)
-                        )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = "Weather:",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Column(modifier = Modifier.padding(start = 8.dp)) {
+                        Row(verticalAlignment = Alignment.Bottom) {
+                            Text(
+                                text = "28°  ",
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Text(
+                                text = "Hey Izzi",
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = "Loc: ",
+                                fontSize = 11.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Text(
+                                text = "FTSM, UKM Bangi",
+                                fontSize = 11.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
                     }
                 }
-            }
-            Box(
-                modifier = Modifier
-                    .size(40.dp)
-                    .background(Color(0xFFC0A87A), CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                Text("Me", color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .background(MaterialTheme.colorScheme.tertiaryContainer, CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        "Me",
+                        color = MaterialTheme.colorScheme.onTertiaryContainer,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
         }
 
-        Row(
+        Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 12.dp)
-                .background(Color.White, RoundedCornerShape(14.dp))
-                .padding(horizontal = 12.dp, vertical = 4.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            OutlinedTextField(
-                value = searchInput,
-                onValueChange = { searchInput = it },
-                placeholder = {
-                    Text(
-                        text = "Search faculty or material",
-                        fontSize = 12.sp,
-                        color = Color(0xFFAAAAAA)
-                    )
-                },
-                modifier = Modifier.weight(1f),
-                singleLine = true,
-                shape = RoundedCornerShape(12.dp)
+                .padding(top = 12.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface
             )
-
-            Box(
+        ) {
+            Row(
                 modifier = Modifier
-                    .padding(start = 8.dp)
-                    .background(Color(0xFF2979FF), RoundedCornerShape(12.dp))
-                    .clickable { submittedSearch = searchInput }
-                    .padding(horizontal = 16.dp, vertical = 14.dp),
-                contentAlignment = Alignment.Center
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Search", fontSize = 14.sp, color = Color.White, fontWeight = FontWeight.Bold)
+                OutlinedTextField(
+                    value = searchInput,
+                    onValueChange = { searchInput = it },
+                    placeholder = {
+                        Text(
+                            text = "Search faculty or material",
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    },
+                    modifier = Modifier.weight(1f),
+                    singleLine = true,
+                    shape = RoundedCornerShape(12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                    )
+                )
+
+                Button(
+                    onClick = { submittedSearch = searchInput },
+                    modifier = Modifier.padding(start = 8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    )
+                ) {
+                    Text(text = "Search", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                }
             }
         }
 
-        if (submittedSearch.isNotEmpty()) {
+        AnimatedVisibility(
+            visible = submittedSearch.isNotEmpty(),
+            enter = fadeIn() + expandVertically(),
+            exit = fadeOut() + shrinkVertically()
+        ) {
             Text(
                 text = "Displaying results for: \"$submittedSearch\"",
-                color = Color(0xFF2979FF),
+                color = MaterialTheme.colorScheme.primary,
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier.padding(top = 8.dp, start = 4.dp)
@@ -148,60 +198,108 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                 .padding(top = 14.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-
-            Box(
+            Card(
                 modifier = Modifier
                     .weight(1f)
-                    .height(80.dp)
-                    .background(Color(0xFF2979FF), RoundedCornerShape(14.dp))
-            )
+                    .height(80.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                )
+            ) {
+                Box(modifier = Modifier.fillMaxSize())
+            }
 
-            Box(
+            Card(
                 modifier = Modifier
                     .weight(1f)
-                    .height(80.dp)
-                    .background(Color.White, RoundedCornerShape(14.dp))
-            )
-        }
-
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 14.dp)
-                .background(Color.White, RoundedCornerShape(20.dp))
-                .padding(16.dp)
-        ) {
-            Column {
-                Text(
-                    text = "Material Contributions",
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color(0xFF1A1A2E)
+                    .height(80.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
                 )
-                Text(
-                    text = "Your sharing activity this year",
-                    fontSize = 10.sp,
-                    color = Color(0xFFAAAAAA),
-                    modifier = Modifier.padding(top = 2.dp)
-                )
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 12.dp)
-                        .height(110.dp)
-                        .background(Color(0xFFF4F7FF), RoundedCornerShape(12.dp)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "Contribution Heat Map",
-                        fontSize = 12.sp,
-                        color = Color(0xFFAAAAAA)
-                    )
-                }
+            ) {
+                Box(modifier = Modifier.fillMaxSize())
             }
         }
 
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 14.dp)
+                .animateContentSize(
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                        stiffness = Spring.StiffnessLow
+                    )
+                )
+                .clickable { isContributionExpanded = !isContributionExpanded },
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            )
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        Text(
+                            text = "Material Contributions",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Text(
+                            text = "Your sharing activity this year",
+                            fontSize = 10.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(top = 2.dp)
+                        )
+                    }
+                    Icon(
+                        imageVector = if (isContributionExpanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
+                        contentDescription = if (isContributionExpanded) "Collapse" else "Expand",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+
+                AnimatedVisibility(visible = isContributionExpanded) {
+                    Column {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 12.dp)
+                                .height(110.dp)
+                                .background(
+                                    MaterialTheme.colorScheme.surfaceVariant,
+                                    RoundedCornerShape(12.dp)
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "Contribution Heat Map",
+                                fontSize = 12.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 12.dp),
+                            horizontalArrangement = Arrangement.SpaceAround
+                        ) {
+                            StatItem("342", "Total")
+                            StatItem("89", "This Month")
+                            StatItem("12", "This Week")
+                        }
+                    }
+                }
+            }
+        }
 
         Row(
             modifier = Modifier
@@ -209,72 +307,79 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                 .padding(top = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-
-            Box(
+            Card(
                 modifier = Modifier
                     .weight(1.4f)
-                    .height(140.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(Color(0xFFB3D4F5))
+                    .height(140.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer
+                )
             ) {
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(8.dp)
-                        .background(Color(0xCCFFFFFF), RoundedCornerShape(8.dp))
-                        .padding(horizontal = 8.dp, vertical = 4.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = "Save", fontSize = 10.sp, fontWeight = FontWeight.Medium)
-                }
-                Column(
-                    modifier = Modifier
-                        .align(Alignment.BottomStart)
-                        .fillMaxWidth()
-                        .background(Color(0xEEFFFFFF))
-                        .padding(horizontal = 10.dp, vertical = 8.dp)
-                ) {
-                    Text(
-                        text = "FACULTY",
-                        fontSize = 9.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF2979FF)
-                    )
-                    Text(
-                        text = "FTSM",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1A1A2E)
-                    )
+                Box(modifier = Modifier.fillMaxSize()) {
+                    FilledTonalButton(
+                        onClick = { },
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(8.dp),
+                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp)
+                    ) {
+                        Text(text = "Save", fontSize = 10.sp, fontWeight = FontWeight.Medium)
+                    }
+
+                    Column(
+                        modifier = Modifier
+                            .align(Alignment.BottomStart)
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.9f))
+                            .padding(horizontal = 10.dp, vertical = 8.dp)
+                    ) {
+                        Text(
+                            text = "FACULTY",
+                            fontSize = 9.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Text(
+                            text = "FTSM",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
                 }
             }
 
-            Box(
+            Card(
                 modifier = Modifier
                     .weight(1f)
-                    .height(140.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(Color(0xFFA3D4B5))
+                    .height(140.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                )
             ) {
-                Column(
-                    modifier = Modifier
-                        .align(Alignment.BottomStart)
-                        .fillMaxWidth()
-                        .background(Color(0xEEFFFFFF))
-                        .padding(horizontal = 10.dp, vertical = 8.dp)
-                ) {
-                    Text(
-                        text = "FACULTY",
-                        fontSize = 9.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF2979FF)
-                    )
-                    Text(
-                        text = "FKAB",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1A1A2E)
-                    )
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Column(
+                        modifier = Modifier
+                            .align(Alignment.BottomStart)
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.9f))
+                            .padding(horizontal = 10.dp, vertical = 8.dp)
+                    ) {
+                        Text(
+                            text = "FACULTY",
+                            fontSize = 9.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Text(
+                            text = "FKAB",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
                 }
             }
         }
@@ -283,17 +388,18 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             text = "Materials",
             fontSize = 15.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF1A1A2E),
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
         )
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            CategoryItem(shortText = "PY", label = "Past Year", bg = Color(0xFFE0F0FF))
-            CategoryItem(shortText = "Note", label = "Notes", bg = Color(0xFFFFF0E0))
-            CategoryItem(shortText = "Lab", label = "Lab Report", bg = Color(0xFFE0FFE8))
-            CategoryItem(shortText = "Quiz", label = "Mock Quiz", bg = Color(0xFFFFE0F0))
+            CategoryItem(shortText = "PY", label = "Past Year", bg = MaterialTheme.colorScheme.primaryContainer)
+            CategoryItem(shortText = "Note", label = "Notes", bg = MaterialTheme.colorScheme.secondaryContainer)
+            CategoryItem(shortText = "Lab", label = "Lab Report", bg = MaterialTheme.colorScheme.tertiaryContainer)
+            CategoryItem(shortText = "Quiz", label = "Mock Quiz", bg = MaterialTheme.colorScheme.errorContainer)
         }
         Row(
             modifier = Modifier
@@ -301,20 +407,22 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                 .padding(top = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            CategoryItem(shortText = "Tut", label = "Tutorial", bg = Color(0xFFF0E0FF))
-            CategoryItem(shortText = "Slide", label = "Slides", bg = Color(0xFFFFE8E0))
-            CategoryItem(shortText = "Code", label = "Code", bg = Color(0xFFE0F4FF))
-            CategoryItem(shortText = "Grp", label = "Groups", bg = Color(0xFFE8FFE0))
+            CategoryItem(shortText = "Tut", label = "Tutorial", bg = MaterialTheme.colorScheme.primaryContainer)
+            CategoryItem(shortText = "Slide", label = "Slides", bg = MaterialTheme.colorScheme.secondaryContainer)
+            CategoryItem(shortText = "Code", label = "Code", bg = MaterialTheme.colorScheme.tertiaryContainer)
+            CategoryItem(shortText = "Grp", label = "Groups", bg = MaterialTheme.colorScheme.errorContainer)
         }
 
-        Box(
+        Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp)
-                .background(Color.White, RoundedCornerShape(20.dp))
-                .padding(16.dp)
+                .padding(top = 16.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            )
         ) {
-            Column {
+            Column(modifier = Modifier.padding(16.dp)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -324,9 +432,13 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                         text = "Student Requests",
                         fontSize = 15.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1A1A2E)
+                        color = MaterialTheme.colorScheme.onSurface
                     )
-                    Text(text = "View All", fontSize = 12.sp, color = Color(0xFF2979FF))
+                    Text(
+                        text = "View All",
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.primary
+                    )
                 }
                 RequestRow(shortText = "PY", title = "Past Year TTTK1143", sub = "Attar · FTSM · 2h ago", xp = "+150 XP")
                 RequestRow(shortText = "Lab", title = "Lab Report TTTE2113", sub = "Salsa · FTSM · 5h ago", xp = "+100 XP")
@@ -334,47 +446,106 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             }
         }
 
-        Row(
+        Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp)
-                .background(Color.White, RoundedCornerShape(20.dp))
-                .padding(horizontal = 16.dp, vertical = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+                .padding(top = 16.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            )
         ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = "Home", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Color(0xFF2979FF))
-                Box(
-                    modifier = Modifier
-                        .padding(top = 4.dp)
-                        .size(5.dp)
-                        .background(Color(0xFF2979FF), CircleShape)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = "Home",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Box(
+                        modifier = Modifier
+                            .padding(top = 4.dp)
+                            .size(5.dp)
+                            .background(MaterialTheme.colorScheme.primary, CircleShape)
+                    )
+                }
+                Text(
+                    text = "Favs",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = "Post",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = "Alerts",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = "Chat",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-            Text(text = "Favs", fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color.Gray)
-            Text(text = "Post", fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color.Gray)
-            Text(text = "Alerts", fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color.Gray)
-            Text(text = "Chat", fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color.Gray)
         }
+    }
+}
+
+@Composable
+fun StatItem(value: String, label: String) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(
+            text = value,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary
+        )
+        Text(
+            text = label,
+            fontSize = 10.sp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     }
 }
 
 @Composable
 fun CategoryItem(shortText: String, label: String, bg: Color) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Box(
-            modifier = Modifier
-                .size(54.dp)
-                .background(bg, RoundedCornerShape(14.dp)),
-            contentAlignment = Alignment.Center
+        Card(
+            modifier = Modifier.size(54.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+            colors = CardDefaults.cardColors(containerColor = bg)
         ) {
-            Text(text = shortText, fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Color(0xFF1A1A2E))
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = shortText,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
         }
         Text(
             text = label,
             fontSize = 10.sp,
-            color = Color(0xFF555555),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = 4.dp)
         )
     }
@@ -388,28 +559,53 @@ fun RequestRow(shortText: String, title: String, sub: String, xp: String) {
             .padding(top = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier
-                .size(38.dp)
-                .background(Color(0xFFE8F0FF), RoundedCornerShape(10.dp)),
-            contentAlignment = Alignment.Center
+        Card(
+            modifier = Modifier.size(38.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer
+            )
         ) {
-            Text(text = shortText, fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color(0xFF2979FF))
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = shortText,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
         }
         Column(
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 10.dp)
         ) {
-            Text(text = title, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF1A1A2E))
-            Text(text = sub,   fontSize = 10.sp, color = Color(0xFF888888))
+            Text(
+                text = title,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Text(
+                text = sub,
+                fontSize = 10.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
-        Box(
-            modifier = Modifier
-                .background(Color(0xFFE8F0FF), RoundedCornerShape(8.dp))
-                .padding(horizontal = 8.dp, vertical = 4.dp)
+        Surface(
+            color = MaterialTheme.colorScheme.primaryContainer,
+            shape = RoundedCornerShape(8.dp)
         ) {
-            Text(text = xp, fontSize = 9.sp, fontWeight = FontWeight.Bold, color = Color(0xFF2979FF))
+            Text(
+                text = xp,
+                fontSize = 9.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+            )
         }
     }
 }
@@ -417,7 +613,7 @@ fun RequestRow(shortText: String, title: String, sub: String, xp: String) {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun HomeScreenPreview() {
-    A207944_Izzi_Izwan_Lab02Theme {
+    A207944_Izzi_Izwan_Lab03Theme {
         HomeScreen()
     }
 }

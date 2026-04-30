@@ -53,7 +53,7 @@ fun ProfileScreen(navController: NavController, viewModel: AppViewModel) {
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = "${userData.matric} · ${userData.faculty}, UKM",
+                        text = "${userData.matric} · ${userData.fakulti}, UKM",
                         fontSize = 11.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

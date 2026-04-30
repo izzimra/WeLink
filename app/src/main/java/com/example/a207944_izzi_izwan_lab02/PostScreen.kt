@@ -19,9 +19,19 @@ import androidx.navigation.NavController
 fun PostScreen(navController: NavController, viewModel: AppViewModel) {
     var name by remember { mutableStateOf("") }
     var matric by remember { mutableStateOf("") }
-    var faculty by remember { mutableStateOf("") }
+    var fakulti by remember { mutableStateOf("") }
     var title by remember { mutableStateOf("") }
     var courseCode by remember { mutableStateOf("") }
+
+    // Category picker
+    val categoryOptions = listOf(
+        Triple("Past Year", "PY", 150),
+        Triple("Notes", "Note", 80),
+        Triple("Lab Report", "Lab", 100),
+        Triple("Slides", "Slide", 70),
+        Triple("Code", "Code", 120)
+    )
+    var selectedCategoryIndex by remember { mutableStateOf(1) }
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(
@@ -72,35 +82,26 @@ fun PostScreen(navController: NavController, viewModel: AppViewModel) {
                         color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Spacer(Modifier.height(8.dp))
                     OutlinedTextField(
-                        value = name,
-                        onValueChange = { name = it },
-                        label = { Text("Name") },
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                        shape = RoundedCornerShape(12.dp)
+                        value = name, onValueChange = { name = it },
+                        label = { Text("Name") }, modifier = Modifier.fillMaxWidth(),
+                        singleLine = true, shape = RoundedCornerShape(12.dp)
                     )
                     Spacer(Modifier.height(8.dp))
                     OutlinedTextField(
-                        value = matric,
-                        onValueChange = { matric = it },
-                        label = { Text("Matric No") },
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                        shape = RoundedCornerShape(12.dp)
+                        value = matric, onValueChange = { matric = it },
+                        label = { Text("Matric No") }, modifier = Modifier.fillMaxWidth(),
+                        singleLine = true, shape = RoundedCornerShape(12.dp)
                     )
                     Spacer(Modifier.height(8.dp))
                     OutlinedTextField(
-                        value = faculty,
-                        onValueChange = { faculty = it },
-                        label = { Text("Faculty") },
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                        shape = RoundedCornerShape(12.dp)
+                        value = fakulti, onValueChange = { fakulti = it },
+                        label = { Text("Fakulti") }, modifier = Modifier.fillMaxWidth(),
+                        singleLine = true, shape = RoundedCornerShape(12.dp)
                     )
                 }
             }
 
-            // Material Details
+            // Material Details + Category
             Card(
                 modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
                 elevation = CardDefaults.cardElevation(0.dp),
@@ -111,27 +112,85 @@ fun PostScreen(navController: NavController, viewModel: AppViewModel) {
                         color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Spacer(Modifier.height(8.dp))
                     OutlinedTextField(
-                        value = title,
-                        onValueChange = { title = it },
-                        label = { Text("Title") },
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                        shape = RoundedCornerShape(12.dp)
+                        value = title, onValueChange = { title = it },
+                        label = { Text("Title") }, modifier = Modifier.fillMaxWidth(),
+                        singleLine = true, shape = RoundedCornerShape(12.dp)
                     )
                     Spacer(Modifier.height(8.dp))
                     OutlinedTextField(
-                        value = courseCode,
-                        onValueChange = { courseCode = it },
-                        label = { Text("Course Code") },
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                        shape = RoundedCornerShape(12.dp)
+                        value = courseCode, onValueChange = { courseCode = it },
+                        label = { Text("Course Code") }, modifier = Modifier.fillMaxWidth(),
+                        singleLine = true, shape = RoundedCornerShape(12.dp)
                     )
+
                     Spacer(Modifier.height(12.dp))
+                    Text("CATEGORY", fontSize = 10.sp, fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Spacer(Modifier.height(8.dp))
+
+                    // Category chips
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        categoryOptions.forEachIndexed { index, (label, _, _) ->
+                            FilterChip(
+                                selected = selectedCategoryIndex == index,
+                                onClick = { selectedCategoryIndex = index },
+                                label = { Text(label, fontSize = 11.sp) },
+                                colors = FilterChipDefaults.filterChipColors(
+                                    selectedContainerColor = MaterialTheme.colorScheme.primary,
+                                    selectedLabelColor = MaterialTheme.colorScheme.onPrimary
+                                )
+                            )
+                        }
+                    }
+
+                    Spacer(Modifier.height(12.dp))
+
+                    // XP preview
+                    val (_, _, xp) = categoryOptions[selectedCategoryIndex]
+                    Surface(
+                        color = MaterialTheme.colorScheme.primaryContainer,
+                        shape = RoundedCornerShape(8.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text("XP reward for this post", fontSize = 12.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text("+$xp XP", fontSize = 13.sp, fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary)
+                        }
+                    }
+
+                    Spacer(Modifier.height(12.dp))
+
                     Button(
                         onClick = {
-                            viewModel.updateUser(name, matric, faculty)
-                            navController.navigate("home")
+                            if (title.isNotBlank() && courseCode.isNotBlank()) {
+                                val (category, short, xpVal) = categoryOptions[selectedCategoryIndex]
+                                // Save user info to ViewModel
+                                viewModel.updateUser(name, matric, fakulti)
+                                // Add the post to shared state
+                                viewModel.addPost(
+                                    MaterialPost(
+                                        title = title,
+                                        courseCode = courseCode,
+                                        posterName = name,
+                                        posterMatric = matric,
+                                        posterFakulti = fakulti,
+                                        category = category,
+                                        categoryShort = short,
+                                        xpValue = xpVal
+                                    )
+                                )
+                                // Navigate to materials list to show the new item
+                                navController.navigate("materials")
+                            }
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {

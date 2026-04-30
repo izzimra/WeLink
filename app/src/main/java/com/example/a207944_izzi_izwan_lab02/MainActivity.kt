@@ -33,6 +33,9 @@ class MainActivity : ComponentActivity() {
                         composable("profile") {
                             ProfileScreen(navController = navController, viewModel = viewModel)
                         }
+                        composable("materials") {
+                            MaterialsListScreen(navController = navController, viewModel = viewModel)
+                        }
                     }
                 }
             }

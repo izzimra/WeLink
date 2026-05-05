@@ -53,7 +53,7 @@ fun MaterialsListScreen(navController: NavController, viewModel: AppViewModel) {
                 .padding(horizontal = 16.dp, vertical = 12.dp)
         ) {
 
-            // Header
+            // ── Header ──────────────────────────────────────────────────
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(0.dp),
@@ -95,7 +95,7 @@ fun MaterialsListScreen(navController: NavController, viewModel: AppViewModel) {
                 }
             }
 
-            // Filter chips
+            // ── Filter chips ─────────────────────────────────────────────
             val categories = listOf("All", "Past Year", "Notes", "Lab Report", "Slides", "Code")
             var selectedCategory by remember { mutableStateOf("All") }
 
@@ -122,7 +122,7 @@ fun MaterialsListScreen(navController: NavController, viewModel: AppViewModel) {
 
             Spacer(Modifier.height(12.dp))
 
-            // Empty state
+            // ── Empty state ───────────────────────────────────────────────
             if (posts.isEmpty()) {
                 Card(
                     modifier = Modifier
@@ -173,7 +173,7 @@ fun MaterialsListScreen(navController: NavController, viewModel: AppViewModel) {
 
             } else {
 
-                // Summary stats row
+                // ── Summary stats row ─────────────────────────────────────
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     elevation = CardDefaults.cardElevation(0.dp),
@@ -199,7 +199,7 @@ fun MaterialsListScreen(navController: NavController, viewModel: AppViewModel) {
 
                 Spacer(Modifier.height(12.dp))
 
-                // Posts list
+                // ── Posts list ────────────────────────────────────────────
                 val filtered = if (selectedCategory == "All") posts
                 else posts.filter { it.category == selectedCategory }
 
@@ -246,7 +246,10 @@ fun MaterialsListScreen(navController: NavController, viewModel: AppViewModel) {
                                 ) {
                                     MaterialPostRow(
                                         post = post,
-                                        onClick = {}
+                                        onClick = {
+                                            val realIndex = posts.indexOf(post)
+                                            navController.navigate("material/$realIndex")
+                                        }
                                     )
                                 }
 
@@ -268,7 +271,7 @@ fun MaterialsListScreen(navController: NavController, viewModel: AppViewModel) {
                 }
             }
 
-            // Bottom nav bar
+            // ── Bottom nav bar (matches HomeScreen style) ─────────────────
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -330,6 +333,7 @@ fun MaterialsListScreen(navController: NavController, viewModel: AppViewModel) {
     }
 }
 
+// ── Row composable for a single material post ───────────────────────────────
 @Composable
 fun MaterialPostRow(post: MaterialPost, onClick: () -> Unit) {
     Row(

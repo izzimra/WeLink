@@ -36,6 +36,14 @@ class MainActivity : ComponentActivity() {
                         composable("materials") {
                             MaterialsListScreen(navController = navController, viewModel = viewModel)
                         }
+                        composable("material/{index}") { backStackEntry ->
+                            val index = backStackEntry.arguments?.getString("index")?.toIntOrNull() ?: 0
+                            MaterialDetailScreen(
+                                navController = navController,
+                                viewModel = viewModel,
+                                index = index
+                            )
+                        }
                     }
                 }
             }

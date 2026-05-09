@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -16,7 +17,7 @@ import androidx.navigation.NavController
 
 @Composable
 fun ProfileScreen(navController: NavController, viewModel: AppViewModel) {
-    val userData by viewModel.userData.collectAsState()
+    val posts by viewModel.posts.collectAsState()
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(
@@ -25,10 +26,13 @@ fun ProfileScreen(navController: NavController, viewModel: AppViewModel) {
                 .background(MaterialTheme.colorScheme.background)
                 .verticalScroll(rememberScrollState())
                 .padding(innerPadding)
-                .padding(horizontal = 16.dp, vertical = 12.dp)
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+            Text("My Profile", fontSize = 20.sp, fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface)
 
-            // Profile Header
+            // Profile header card
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(0.dp),
@@ -36,92 +40,117 @@ fun ProfileScreen(navController: NavController, viewModel: AppViewModel) {
             ) {
                 Column(
                     modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Box(
-                        modifier = Modifier.size(56.dp)
+                        modifier = Modifier
+                            .size(56.dp)
                             .background(MaterialTheme.colorScheme.tertiaryContainer, CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("Me", fontSize = 14.sp, fontWeight = FontWeight.Bold,
+                        Text("Me", fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onTertiaryContainer)
                     }
-                    Spacer(Modifier.height(8.dp))
-                    Text(
-                        text = if (userData.name.isEmpty()) "No name entered" else userData.name,
-                        fontSize = 16.sp, fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    Text(
-                        text = "${userData.matric} · ${userData.fakulti}, UKM",
-                        fontSize = 11.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-
-            // Stats
-            Card(
-                modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
-                elevation = CardDefaults.cardElevation(0.dp),
-                colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surface)
-            ) {
-                Column(modifier = Modifier.padding(12.dp)) {
-                    Text("MY STATS", fontSize = 10.sp, fontWeight = FontWeight.Bold,
+                    Spacer(Modifier.height(4.dp))
+                    Text("Izzi", fontSize = 16.sp, fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface)
+                    Text("207944 · FTSM, UKM", fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    Spacer(Modifier.height(8.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        ProfileStatItem("12", "Uploads", Modifier.weight(1f))
-                        ProfileStatItem("89", "This Month", Modifier.weight(1f))
-                        ProfileStatItem("1.2k", "XP", Modifier.weight(1f))
-                    }
                 }
             }
 
-            // My Posts
-            Card(
-                modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
-                elevation = CardDefaults.cardElevation(0.dp),
-                colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surface)
+            // Stats — live from ViewModel
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                ProfileStatItem("${posts.size}", "My Posts", Modifier.weight(1f))
+                ProfileStatItem("${posts.size * 100}", "XP Earned", Modifier.weight(1f))
+                ProfileStatItem("89", "This Month", Modifier.weight(1f))
+            }
+
+            Text("My Posts", fontSize = 15.sp, fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface)
+
+            // Posts list from ViewModel
+            if (posts.isEmpty()) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    elevation = CardDefaults.cardElevation(0.dp),
+                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surface)
+                ) {
+                    Box(
+                        modifier = Modifier.fillMaxWidth().padding(32.dp),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Text("MY POSTS", fontSize = 10.sp, fontWeight = FontWeight.Bold,
+                        Text("No posts yet. Be the first to share!",
+                            fontSize = 13.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Text("View All", fontSize = 11.sp,
-                            color = MaterialTheme.colorScheme.primary)
                     }
-                    RequestRow("PY", "TTTK1143 Final", "2h ago · FTSM", "+150 XP")
-                    RequestRow("Note", "TTTE2123 Notes", "1d ago · FTSM", "+80 XP")
+                }
+            } else {
+                posts.forEach { post ->
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        elevation = CardDefaults.cardElevation(0.dp),
+                        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surface)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(38.dp)
+                                    .background(
+                                        MaterialTheme.colorScheme.primaryContainer,
+                                        RoundedCornerShape(8.dp)
+                                    ),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    post.materialType.take(2),
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                            Column(
+                                modifier = Modifier.weight(1f).padding(start = 10.dp)
+                            ) {
+                                Text(post.title, fontSize = 13.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = MaterialTheme.colorScheme.onSurface)
+                                Text(post.courseCode, fontSize = 11.sp,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
+                            Surface(
+                                color = MaterialTheme.colorScheme.primaryContainer,
+                                shape = RoundedCornerShape(8.dp)
+                            ) {
+                                Text("+100 XP", fontSize = 9.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.padding(
+                                        horizontal = 8.dp, vertical = 4.dp))
+                            }
+                        }
+                    }
                 }
             }
 
-            Spacer(Modifier.height(12.dp))
-
-            // Back button
             OutlinedButton(
                 onClick = { navController.navigate("post") },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Post Another Material")
-            }
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
+            ) { Text("Post Another Material") }
 
-            Spacer(Modifier.height(8.dp))
-
-            // Go Home button
             OutlinedButton(
                 onClick = { navController.navigate("home") },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Back to Home")
-            }
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
+            ) { Text("Back to Home") }
         }
     }
 }

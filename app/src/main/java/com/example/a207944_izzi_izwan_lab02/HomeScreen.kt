@@ -48,7 +48,7 @@ fun HomeScreen(
                 .padding(horizontal = 16.dp, vertical = 12.dp)
         ) {
 
-            // Weather / Greeting Card
+            // Greeting card
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(0.dp),
@@ -60,7 +60,7 @@ fun HomeScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Weather:", fontSize = 14.sp, fontWeight = FontWeight.Medium,
+                        Text("WeLink:", fontSize = 14.sp, fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant)
                         Column(modifier = Modifier.padding(start = 8.dp)) {
                             Row(verticalAlignment = Alignment.Bottom) {
@@ -69,33 +69,32 @@ fun HomeScreen(
                                 Text("Hey Izzi", fontSize = 15.sp, fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurface)
                             }
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text("Loc: ", fontSize = 11.sp,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant)
-                                Text("FTSM, UKM Bangi", fontSize = 11.sp,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant)
-                            }
+                            Text("Loc: FTSM, UKM Bangi", fontSize = 11.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
                     Box(
-                        modifier = Modifier.size(40.dp)
-                            .background(MaterialTheme.colorScheme.tertiaryContainer, CircleShape),
+                        modifier = Modifier
+                            .size(40.dp)
+                            .background(MaterialTheme.colorScheme.tertiaryContainer, CircleShape)
+                            .clickable { navController.navigate("profile") },
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("Me", color = MaterialTheme.colorScheme.onTertiaryContainer,
-                            fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                        Text("Me", fontSize = 12.sp, fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onTertiaryContainer)
                     }
                 }
             }
 
-            // Search Card
+            // Search card
             Card(
                 modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
                 elevation = CardDefaults.cardElevation(0.dp),
                 colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surface)
             ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp),
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(horizontal = 12.dp, vertical = 8.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -131,14 +130,15 @@ fun HomeScreen(
                 exit = fadeOut() + shrinkVertically()
             ) {
                 Text(
-                    text = "Displaying results for: \"$submittedSearch\"",
+                    text = "Results for: \"$submittedSearch\"",
                     color = MaterialTheme.colorScheme.primary,
-                    fontSize = 13.sp, fontWeight = FontWeight.Medium,
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Medium,
                     modifier = Modifier.padding(top = 8.dp, start = 4.dp)
                 )
             }
 
-            // Two small banner cards
+            // Banner cards
             Row(
                 modifier = Modifier.fillMaxWidth().padding(top = 14.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
@@ -148,7 +148,6 @@ fun HomeScreen(
                     elevation = CardDefaults.cardElevation(0.dp),
                     colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer)
                 ) { Box(modifier = Modifier.fillMaxSize()) }
-
                 Card(
                     modifier = Modifier.weight(1f).height(80.dp),
                     elevation = CardDefaults.cardElevation(0.dp),
@@ -156,7 +155,7 @@ fun HomeScreen(
                 ) { Box(modifier = Modifier.fillMaxSize()) }
             }
 
-            // Expandable Contributions Card
+            // Expandable contributions card
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -165,8 +164,7 @@ fun HomeScreen(
                         animationSpec = spring(
                             dampingRatio = Spring.DampingRatioMediumBouncy,
                             stiffness = Spring.StiffnessLow
-                        ),
-                        alignment = Alignment.BottomCenter
+                        )
                     )
                     .clickable { isContributionExpanded = !isContributionExpanded },
                 elevation = CardDefaults.cardElevation(0.dp),
@@ -188,12 +186,12 @@ fun HomeScreen(
                         }
                         Icon(
                             imageVector = if (isContributionExpanded)
-                                Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
+                                Icons.Filled.KeyboardArrowUp
+                            else Icons.Filled.KeyboardArrowDown,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
-
                     AnimatedVisibility(
                         visible = isContributionExpanded,
                         enter = fadeIn() + expandVertically(expandFrom = Alignment.Bottom),
@@ -205,8 +203,10 @@ fun HomeScreen(
                                     .fillMaxWidth()
                                     .padding(top = 12.dp)
                                     .height(110.dp)
-                                    .background(MaterialTheme.colorScheme.surfaceVariant,
-                                        RoundedCornerShape(12.dp)),
+                                    .background(
+                                        MaterialTheme.colorScheme.surfaceVariant,
+                                        RoundedCornerShape(12.dp)
+                                    ),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text("Contribution Heat Map", fontSize = 12.sp,
@@ -225,7 +225,7 @@ fun HomeScreen(
                 }
             }
 
-            // Faculty Cards
+            // Faculty cards
             Row(
                 modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
@@ -257,7 +257,6 @@ fun HomeScreen(
                         }
                     }
                 }
-
                 Card(
                     modifier = Modifier.weight(1f).height(140.dp),
                     elevation = CardDefaults.cardElevation(0.dp),
@@ -284,20 +283,19 @@ fun HomeScreen(
             Text("Materials", fontSize = 15.sp, fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(top = 16.dp, bottom = 8.dp))
-
             Row(modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween) {
-                CategoryItem("PY", "Past Year", MaterialTheme.colorScheme.primaryContainer)
-                CategoryItem("Note", "Notes", MaterialTheme.colorScheme.secondaryContainer)
-                CategoryItem("Lab", "Lab Report", MaterialTheme.colorScheme.tertiaryContainer)
-                CategoryItem("Quiz", "Mock Quiz", MaterialTheme.colorScheme.errorContainer)
+                CategoryItem("PY",   "Past Year",  MaterialTheme.colorScheme.primaryContainer)
+                CategoryItem("Note", "Notes",      MaterialTheme.colorScheme.secondaryContainer)
+                CategoryItem("Lab",  "Lab Report", MaterialTheme.colorScheme.tertiaryContainer)
+                CategoryItem("Quiz", "Mock Quiz",  MaterialTheme.colorScheme.errorContainer)
             }
             Row(modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween) {
-                CategoryItem("Tut", "Tutorial", MaterialTheme.colorScheme.primaryContainer)
-                CategoryItem("Slide", "Slides", MaterialTheme.colorScheme.secondaryContainer)
-                CategoryItem("Code", "Code", MaterialTheme.colorScheme.tertiaryContainer)
-                CategoryItem("Grp", "Groups", MaterialTheme.colorScheme.errorContainer)
+                CategoryItem("Tut",   "Tutorial", MaterialTheme.colorScheme.primaryContainer)
+                CategoryItem("Slide", "Slides",   MaterialTheme.colorScheme.secondaryContainer)
+                CategoryItem("Code",  "Code",     MaterialTheme.colorScheme.tertiaryContainer)
+                CategoryItem("Grp",   "Groups",   MaterialTheme.colorScheme.errorContainer)
             }
 
             // Student Requests
@@ -307,53 +305,83 @@ fun HomeScreen(
                 colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surface)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Row(modifier = Modifier.fillMaxWidth(),
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically) {
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Text("Student Requests", fontSize = 15.sp, fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface)
                         Text("View All", fontSize = 12.sp,
                             color = MaterialTheme.colorScheme.primary)
                     }
-                    RequestRow("PY", "Past Year TTTK1143", "Attar · FTSM · 2h ago", "+150 XP")
-                    RequestRow("Lab", "Lab Report TTTE2113", "Salsa · FTSM · 5h ago", "+100 XP")
-                    RequestRow("Note", "Notes TTTE2123", "Bie · FTSM · 1d ago", "+80 XP")
+                    RequestRow(
+                        shortText = "PY",
+                        title = "Past Year TTTK1143",
+                        sub = "Attar · FTSM · 2h ago",
+                        xp = "+150 XP",
+                        onClick = {
+                            navController.navigate(
+                                "request_detail/Past Year TTTK1143/TTTK1143/Attar"
+                            )
+                        }
+                    )
+                    RequestRow(
+                        shortText = "Lab",
+                        title = "Lab Report TTTE2113",
+                        sub = "Salsa · FTSM · 5h ago",
+                        xp = "+100 XP",
+                        onClick = {
+                            navController.navigate(
+                                "request_detail/Lab Report TTTE2113/TTTE2113/Salsa"
+                            )
+                        }
+                    )
+                    RequestRow(
+                        shortText = "Note",
+                        title = "Notes TTTE2123",
+                        sub = "Bie · FTSM · 1d ago",
+                        xp = "+80 XP",
+                        onClick = {
+                            navController.navigate(
+                                "request_detail/Notes TTTE2123/TTTE2123/Bie"
+                            )
+                        }
+                    )
                 }
             }
 
-            // Bottom Nav Bar
+            // Bottom nav bar
             Card(
                 modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
                 elevation = CardDefaults.cardElevation(0.dp),
                 colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surface)
             ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 16.dp),
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text("Home", fontSize = 14.sp, fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.primary)
-                        Box(modifier = Modifier.padding(top = 4.dp).size(5.dp)
-                            .background(MaterialTheme.colorScheme.primary, CircleShape))
+                        Box(
+                            modifier = Modifier.padding(top = 4.dp).size(5.dp)
+                                .background(MaterialTheme.colorScheme.primary, CircleShape)
+                        )
                     }
                     Text("Favs", fontSize = 14.sp, fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    Text(
-                        text = "Post",
-                        fontSize = 14.sp, fontWeight = FontWeight.Medium,
+                    Text("Post", fontSize = 14.sp, fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.clickable { navController.navigate("post") }
-                    )
-                    Text("Alerts", fontSize = 14.sp, fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    Text(
-                        text = "Profile",
-                        fontSize = 14.sp, fontWeight = FontWeight.Medium,
+                        modifier = Modifier.clickable { navController.navigate("post") })
+                    Text("Board", fontSize = 14.sp, fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.clickable { navController.navigate("profile") }
-                    )
+                        modifier = Modifier.clickable { navController.navigate("leaderboard") })
+                    Text("Profile", fontSize = 14.sp, fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.clickable { navController.navigate("profile") })
                 }
             }
         }

@@ -30,18 +30,31 @@ class MainActivity : ComponentActivity() {
                         composable("post") {
                             PostScreen(navController = navController, viewModel = viewModel)
                         }
+                        composable("post_from_request/{title}/{courseCode}") { backStackEntry ->
+                            val title = backStackEntry.arguments?.getString("title") ?: ""
+                            val courseCode = backStackEntry.arguments?.getString("courseCode") ?: ""
+                            PostScreen(
+                                navController = navController,
+                                viewModel = viewModel,
+                                prefilledTitle = title,
+                                prefilledCourseCode = courseCode
+                            )
+                        }
                         composable("profile") {
                             ProfileScreen(navController = navController, viewModel = viewModel)
                         }
-                        composable("materials") {
-                            MaterialsListScreen(navController = navController, viewModel = viewModel)
+                        composable("leaderboard") {
+                            LeaderboardScreen(navController = navController)
                         }
-                        composable("material/{index}") { backStackEntry ->
-                            val index = backStackEntry.arguments?.getString("index")?.toIntOrNull() ?: 0
-                            MaterialDetailScreen(
+                        composable("request_detail/{title}/{courseCode}/{requester}") { backStackEntry ->
+                            val title = backStackEntry.arguments?.getString("title") ?: ""
+                            val courseCode = backStackEntry.arguments?.getString("courseCode") ?: ""
+                            val requester = backStackEntry.arguments?.getString("requester") ?: ""
+                            RequestDetailScreen(
                                 navController = navController,
-                                viewModel = viewModel,
-                                index = index
+                                title = title,
+                                courseCode = courseCode,
+                                requester = requester
                             )
                         }
                     }

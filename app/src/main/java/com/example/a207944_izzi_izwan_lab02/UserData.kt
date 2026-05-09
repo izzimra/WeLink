@@ -12,9 +12,10 @@ data class UserData(
 data class MaterialPost(
     val title: String,
     val courseCode: String,
-    val posterName: String,
-    val posterMatric: String,
-    val posterFakulti: String,
+    val materialType: String = "Notes",
+    val posterName: String = "Izzi Izwan",
+    val posterMatric: String = "207944",
+    val posterFakulti: String = "FTSM",
     val category: String = "Notes",         // e.g. "Notes", "Past Year", "Lab Report"
     val categoryShort: String = "Note",     // e.g. "Note", "PY", "Lab"
     val xpValue: Int = 80                   // XP awarded for this post

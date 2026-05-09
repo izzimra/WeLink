@@ -1,5 +1,7 @@
 package com.example.a207944_izzi_izwan_lab02
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -16,7 +18,8 @@ fun StatItem(value: String, label: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(value, fontSize = 18.sp, fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary)
-        Text(label, fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(label, fontSize = 10.sp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
 
@@ -33,7 +36,8 @@ fun ProfileStatItem(value: String, label: String, modifier: Modifier = Modifier)
         ) {
             Text(value, fontSize = 18.sp, fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary)
-            Text(label, fontSize = 9.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(label, fontSize = 9.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }
@@ -51,15 +55,25 @@ fun CategoryItem(shortText: String, label: String, bg: Color) {
                     color = MaterialTheme.colorScheme.onSurface)
             }
         }
-        Text(label, fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant,
+        Text(label, fontSize = 10.sp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = 4.dp))
     }
 }
 
 @Composable
-fun RequestRow(shortText: String, title: String, sub: String, xp: String) {
+fun RequestRow(
+    shortText: String,
+    title: String,
+    sub: String,
+    xp: String,
+    onClick: () -> Unit = {}
+) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 12.dp)
+            .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Card(
@@ -75,10 +89,13 @@ fun RequestRow(shortText: String, title: String, sub: String, xp: String) {
         Column(modifier = Modifier.weight(1f).padding(start = 10.dp)) {
             Text(title, fontSize = 12.sp, fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurface)
-            Text(sub, fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(sub, fontSize = 10.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
-        Surface(color = MaterialTheme.colorScheme.primaryContainer,
-            shape = RoundedCornerShape(8.dp)) {
+        Surface(
+            color = MaterialTheme.colorScheme.primaryContainer,
+            shape = RoundedCornerShape(8.dp)
+        ) {
             Text(xp, fontSize = 9.sp, fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp))

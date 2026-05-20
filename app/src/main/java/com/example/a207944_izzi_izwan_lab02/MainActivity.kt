@@ -17,10 +17,17 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        // Build the data-layer dependency chain once at activity creation.
+        val database = WeLinkDatabase.getDatabase(this)
+        val repository = MaterialRepository(database.materialPostDao())
+        val viewModelFactory = AppViewModelFactory(repository)
+
         setContent {
             A207944_Izzi_Izwan_Lab03Theme {
                 val navController = rememberNavController()
-                val viewModel: AppViewModel = viewModel()
+                // Use the factory so the ViewModel receives the Repository.
+                val viewModel: AppViewModel = viewModel(factory = viewModelFactory)
 
                 Surface(modifier = Modifier.fillMaxSize()) {
                     NavHost(navController = navController, startDestination = "home") {

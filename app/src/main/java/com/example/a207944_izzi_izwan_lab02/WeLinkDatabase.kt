@@ -24,7 +24,9 @@ abstract class WeLinkDatabase : RoomDatabase() {
                     context.applicationContext,
                     WeLinkDatabase::class.java,
                     "welink_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration(true)
+                    .build()
                 INSTANCE = instance
                 instance
             }

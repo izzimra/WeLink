@@ -22,7 +22,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,6 +36,8 @@ fun HomeScreen(
     var searchInput by remember { mutableStateOf("") }
     var submittedSearch by remember { mutableStateOf("") }
     var isContributionExpanded by remember { mutableStateOf(false) }
+
+    val posts by viewModel.posts.collectAsState()
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(
@@ -216,9 +217,9 @@ fun HomeScreen(
                                 modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
                                 horizontalArrangement = Arrangement.SpaceAround
                             ) {
-                                StatItem("342", "Total")
-                                StatItem("89", "This Month")
-                                StatItem("12", "This Week")
+                                StatItem("${posts.size}", "Total")
+                                StatItem("${posts.size * 5}", "This Month")
+                                StatItem("${posts.size}", "This Week")
                             }
                         }
                     }

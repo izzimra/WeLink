@@ -115,7 +115,7 @@ fun HomeScreen(
                         )
                     )
                     Button(
-                        onClick = { submittedSearch = searchInput },
+                        onClick = { navController.navigate("search") },
                         modifier = Modifier.padding(start = 8.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primary)

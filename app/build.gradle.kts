@@ -60,6 +60,10 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     // Firestore: the cloud NoSQL database for the shared community feed.
     implementation(libs.firebase.firestore)
+    // Retrofit: turns a Kotlin interface into real HTTP calls (the web API pillar).
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    // Gson converter: auto-converts the JSON response into Kotlin objects.
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

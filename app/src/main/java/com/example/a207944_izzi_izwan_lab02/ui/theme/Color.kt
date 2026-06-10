@@ -2,60 +2,30 @@ package com.example.a207944_izzi_izwan_lab02.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Light Theme Colors - Generated from Material Theme Builder
-val md_theme_light_primary = Color(0xFF2979FF)
-val md_theme_light_onPrimary = Color(0xFFFFFFFF)
-val md_theme_light_primaryContainer = Color(0xFFD8E2FF)
-val md_theme_light_onPrimaryContainer = Color(0xFF001A41)
-val md_theme_light_secondary = Color(0xFF565E71)
-val md_theme_light_onSecondary = Color(0xFFFFFFFF)
-val md_theme_light_secondaryContainer = Color(0xFFDAE2F9)
-val md_theme_light_onSecondaryContainer = Color(0xFF131C2B)
-val md_theme_light_tertiary = Color(0xFF705575)
-val md_theme_light_onTertiary = Color(0xFFFFFFFF)
-val md_theme_light_tertiaryContainer = Color(0xFFFAD8FD)
-val md_theme_light_onTertiaryContainer = Color(0xFF28132E)
-val md_theme_light_error = Color(0xFFBA1A1A)
-val md_theme_light_errorContainer = Color(0xFFFFDAD6)
-val md_theme_light_onError = Color(0xFFFFFFFF)
-val md_theme_light_onErrorContainer = Color(0xFF410002)
-val md_theme_light_background = Color(0xFFF8F9FF)
-val md_theme_light_onBackground = Color(0xFF1A1B20)
-val md_theme_light_surface = Color(0xFFF8F9FF)
-val md_theme_light_onSurface = Color(0xFF1A1B20)
-val md_theme_light_surfaceVariant = Color(0xFFE1E2EC)
-val md_theme_light_onSurfaceVariant = Color(0xFF44474F)
-val md_theme_light_outline = Color(0xFF757780)
-val md_theme_light_inverseOnSurface = Color(0xFFF1F0F7)
-val md_theme_light_inverseSurface = Color(0xFF2F3036)
-val md_theme_light_inversePrimary = Color(0xFFADC6FF)
-val md_theme_light_surfaceTint = Color(0xFF2979FF)
+// =====================================================================
+// WeLink design tokens (Habbitie-style). CHANGE A COLOR HERE → it
+// updates everywhere, because every screen reads it through the theme.
+// =====================================================================
 
-// Dark Theme Colors - Generated from Material Theme Builder
-val md_theme_dark_primary = Color(0xFFADC6FF)
-val md_theme_dark_onPrimary = Color(0xFF002E69)
-val md_theme_dark_primaryContainer = Color(0xFF004494)
-val md_theme_dark_onPrimaryContainer = Color(0xFFD8E2FF)
-val md_theme_dark_secondary = Color(0xFFBEC6DC)
-val md_theme_dark_onSecondary = Color(0xFF283141)
-val md_theme_dark_secondaryContainer = Color(0xFF3F4759)
-val md_theme_dark_onSecondaryContainer = Color(0xFFDAE2F9)
-val md_theme_dark_tertiary = Color(0xFFDEBCE0)
-val md_theme_dark_onTertiary = Color(0xFF3F2844)
-val md_theme_dark_tertiaryContainer = Color(0xFF573E5C)
-val md_theme_dark_onTertiaryContainer = Color(0xFFFAD8FD)
-val md_theme_dark_error = Color(0xFFFFB4AB)
-val md_theme_dark_errorContainer = Color(0xFF93000A)
-val md_theme_dark_onError = Color(0xFF690005)
-val md_theme_dark_onErrorContainer = Color(0xFFFFDAD6)
-val md_theme_dark_background = Color(0xFF1A1B20)
-val md_theme_dark_onBackground = Color(0xFFE3E2E9)
-val md_theme_dark_surface = Color(0xFF1A1B20)
-val md_theme_dark_onSurface = Color(0xFFE3E2E9)
-val md_theme_dark_surfaceVariant = Color(0xFF44474F)
-val md_theme_dark_onSurfaceVariant = Color(0xFFC5C6D0)
-val md_theme_dark_outline = Color(0xFF8F9099)
-val md_theme_dark_inverseOnSurface = Color(0xFF1A1B20)
-val md_theme_dark_inverseSurface = Color(0xFFE3E2E9)
-val md_theme_dark_inversePrimary = Color(0xFF2979FF)
-val md_theme_dark_surfaceTint = Color(0xFFADC6FF)
+// --- Core neutrals ---
+val DeepCharcoal = Color(0xFF1A1A2E) // primary buttons, headings, inputs
+val OffWhite     = Color(0xFFF6F6F4) // app background (soft light gray)
+val PureWhite    = Color(0xFFFFFFFF) // cards / surfaces sit crisp on OffWhite
+val MutedGray    = Color(0xFF6B6B72) // secondary text
+val LightBorder  = Color(0xFFE6E6EC) // thin clean borders & dividers
+val SurfaceGray  = Color(0xFFEDEDF0) // subtle filled areas (e.g. heat map box)
+
+// --- Vibrant pastel accents (category blocks / onboarding cards) ---
+val AccentCoral    = Color(0xFFFF6B6B) // coral / pink
+val AccentOrange   = Color(0xFFFF9F1C) // energetic orange
+val AccentLavender = Color(0xFFB8A4F0) // soft lavender
+val AccentBlue     = Color(0xFF6CC3F0) // sky blue
+val AccentYellow   = Color(0xFFFFD43B) // sunny yellow
+
+// Text/icon color that sits on top of the pastels (charcoal reads well on all of them).
+val OnAccent = DeepCharcoal
+
+// --- Dark theme neutrals (kept simple; app is light-first) ---
+val DarkBackground = Color(0xFF121218)
+val DarkSurface    = Color(0xFF1E1E26)
+val DarkOnSurface  = Color(0xFFE8E8EC)

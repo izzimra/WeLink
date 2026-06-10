@@ -1,19 +1,19 @@
 plugins {
     alias(libs.plugins.android.application)
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("org.jetbrains.kotlin.kapt")
+    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.google.services)
 }
 
 android {
     namespace = "com.example.a207944_izzi_izwan_lab02"
-    compileSdk = 36
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.a207944_izzi_izwan_lab02"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -64,6 +64,8 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     // Gson converter: auto-converts the JSON response into Kotlin objects.
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    // ML Kit Text Recognition: on-device OCR for the camera/sensor pillar (no API key).
+    implementation("com.google.mlkit:text-recognition:16.0.1")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

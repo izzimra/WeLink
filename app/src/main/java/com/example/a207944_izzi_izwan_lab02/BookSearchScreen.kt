@@ -18,15 +18,21 @@ import androidx.navigation.NavController
 @Composable
 fun BookSearchScreen(
     navController: NavController,
+    initialQuery: String = "",
     viewModel: SearchViewModel = viewModel()
 ) {
     // Local UI state for the text field.
-    var query by remember { mutableStateOf("") }
+    var query by remember { mutableStateOf(initialQuery) }
 
     // Subscribe to the three pieces of ViewModel state.
     val results by viewModel.results.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val error by viewModel.error.collectAsState()
+
+    // If the user typed a query on Home, auto-run the search the first time we appear.
+    LaunchedEffect(initialQuery) {
+        if (initialQuery.isNotBlank()) viewModel.search(initialQuery)
+    }
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(

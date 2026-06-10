@@ -59,6 +59,16 @@ class MainActivity : ComponentActivity() {
                         composable("search") {
                             BookSearchScreen(navController = navController)
                         }
+                        composable("search/{query}") { backStackEntry ->
+                            val query = backStackEntry.arguments?.getString("query") ?: ""
+                            BookSearchScreen(
+                                navController = navController,
+                                initialQuery = query
+                            )
+                        }
+                        composable("scan") {
+                            ScanScreen(navController = navController, viewModel = viewModel)
+                        }
                         composable("request_detail/{title}/{courseCode}/{requester}") { backStackEntry ->
                             val title = backStackEntry.arguments?.getString("title") ?: ""
                             val courseCode = backStackEntry.arguments?.getString("courseCode") ?: ""

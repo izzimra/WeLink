@@ -16,3 +16,8 @@ local.properties
 
 # Firebase config contains API keys — keep out of version control
 app/google-services.json
+
+# Kotlin compiler cache
+.kotlin/
+# Per-module IDE settings
+app/.idea/

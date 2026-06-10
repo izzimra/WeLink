@@ -115,7 +115,17 @@ fun HomeScreen(
                         )
                     )
                     Button(
-                        onClick = { navController.navigate("search") },
+                        onClick = {
+                            // Carry the user's typed query into the Open Library search screen.
+                            // URL-encode in case the query contains spaces or special characters.
+                            val q = searchInput.trim()
+                            if (q.isEmpty()) {
+                                navController.navigate("search")
+                            } else {
+                                val encoded = java.net.URLEncoder.encode(q, "UTF-8")
+                                navController.navigate("search/$encoded")
+                            }
+                        },
                         modifier = Modifier.padding(start = 8.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primary)
@@ -378,6 +388,9 @@ fun HomeScreen(
                     Text("Post", fontSize = 14.sp, fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.clickable { navController.navigate("post") })
+                    Text("Scan", fontSize = 14.sp, fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.clickable { navController.navigate("scan") })
                     Text("Board", fontSize = 14.sp, fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.clickable { navController.navigate("leaderboard") })

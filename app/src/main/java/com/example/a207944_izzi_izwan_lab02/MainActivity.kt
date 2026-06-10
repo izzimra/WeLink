@@ -53,6 +53,9 @@ class MainActivity : ComponentActivity() {
                         composable("leaderboard") {
                             LeaderboardScreen(navController = navController)
                         }
+                        composable("community") {
+                            CommunityFeedScreen(navController = navController)
+                        }
                         composable("request_detail/{title}/{courseCode}/{requester}") { backStackEntry ->
                             val title = backStackEntry.arguments?.getString("title") ?: ""
                             val courseCode = backStackEntry.arguments?.getString("courseCode") ?: ""

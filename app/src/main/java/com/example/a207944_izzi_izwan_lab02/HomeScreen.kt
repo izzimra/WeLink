@@ -372,8 +372,9 @@ fun HomeScreen(
                                 .background(MaterialTheme.colorScheme.primary, CircleShape)
                         )
                     }
-                    Text("Favs", fontSize = 14.sp, fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text("Cloud", fontSize = 14.sp, fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.clickable { navController.navigate("community") })
                     Text("Post", fontSize = 14.sp, fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.clickable { navController.navigate("post") })

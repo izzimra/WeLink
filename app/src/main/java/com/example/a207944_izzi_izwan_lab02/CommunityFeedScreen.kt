@@ -9,6 +9,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -26,6 +29,10 @@ fun CommunityFeedScreen(
     // collectAsState subscribes to the cloud StateFlow; recomposes when new data arrives.
     val materials by viewModel.materials.collectAsState()
 
+    // Local input state for the material the user wants to share.
+    var title by remember { mutableStateOf("") }
+    var courseCode by remember { mutableStateOf("") }
+
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(
             modifier = Modifier
@@ -41,24 +48,53 @@ fun CommunityFeedScreen(
 
             Spacer(Modifier.height(12.dp))
 
-            // Temporary test button: pushes a sample doc so we can prove the cloud round-trip
-            // before the Camera/API flow is wired in. We'll replace this on Day 3.
+            // Title input for the material to share.
+            OutlinedTextField(
+                value = title,
+                onValueChange = { title = it },
+                label = { Text("Material title") },
+                placeholder = { Text("e.g. Calculus Chapter 3 Notes", fontSize = 12.sp) },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
+            )
+
+            Spacer(Modifier.height(8.dp))
+
+            // Course code input.
+            OutlinedTextField(
+                value = courseCode,
+                onValueChange = { courseCode = it },
+                label = { Text("Course code") },
+                placeholder = { Text("e.g. TTTK1143", fontSize = 12.sp) },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
+            )
+
+            Spacer(Modifier.height(8.dp))
+
+            // Upload what the user typed to Firestore, then clear the fields.
             Button(
                 onClick = {
-                    viewModel.share(
-                        CommunityMaterial(
-                            title = "Sample Material",
-                            courseCode = "TTTK1143",
-                            materialType = "Notes",
-                            uploader = "Izzi (A207944)",
-                            timestamp = System.currentTimeMillis()
+                    if (title.isNotBlank() && courseCode.isNotBlank()) {
+                        viewModel.share(
+                            CommunityMaterial(
+                                title = title.trim(),
+                                courseCode = courseCode.trim(),
+                                materialType = "Notes",
+                                uploader = "Izzi (A207944)",
+                                timestamp = System.currentTimeMillis()
+                            )
                         )
-                    )
+                        title = ""        // clear so the next share is fresh
+                        courseCode = ""
+                    }
                 },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp)
             ) {
-                Text("Share a test material to cloud", fontWeight = FontWeight.Bold)
+                Text("Share to Community Cloud", fontWeight = FontWeight.Bold)
             }
 
             Spacer(Modifier.height(12.dp))
@@ -68,7 +104,7 @@ fun CommunityFeedScreen(
                     modifier = Modifier.fillMaxWidth().padding(32.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("No community materials yet. Tap the button above!",
+                    Text("No community materials yet. Type one above and share!",
                         fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             } else {

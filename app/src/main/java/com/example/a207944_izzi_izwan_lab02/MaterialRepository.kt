@@ -12,6 +12,10 @@ class MaterialRepository(private val dao: MaterialPostDao) {
         dao.insertPost(post)
     }
 
+    suspend fun deletePost(post: MaterialPostEntity) {
+        dao.deletePost(post)
+    }
+
     suspend fun deleteAllPosts() {
         dao.deleteAllPosts()
     }

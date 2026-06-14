@@ -51,6 +51,19 @@ class AppViewModel(private val repository: MaterialRepository) : ViewModel() {
         }
     }
 
+    fun deletePost(post: MaterialPost) {
+        viewModelScope.launch {
+            repository.deletePost(
+                MaterialPostEntity(
+                    id = post.id,
+                    title = post.title,
+                    courseCode = post.courseCode,
+                    materialType = post.materialType
+                )
+            )
+        }
+    }
+
     fun clearPosts() {
         viewModelScope.launch {
             repository.deleteAllPosts()

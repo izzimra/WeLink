@@ -6,6 +6,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -134,6 +136,14 @@ fun ProfileScreen(navController: NavController, viewModel: AppViewModel) {
                                     color = MaterialTheme.colorScheme.primary,
                                     modifier = Modifier.padding(
                                         horizontal = 8.dp, vertical = 4.dp))
+                            }
+                            IconButton(onClick = { viewModel.deletePost(post) }) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = "Delete Post",
+                                    tint = MaterialTheme.colorScheme.error,
+                                    modifier = Modifier.size(18.dp)
+                                )
                             }
                         }
                     }
